@@ -30,7 +30,7 @@ jobs:
 
     - name: Compile Arduino Blink Sketch
       run: |
-        arduino-cli compile --fqbn arduino:avr:uno --output-dir ./output ./test.ino
+        arduino-cli compile --fqbn arduino:avr:uno --output-dir ./output gitCICD.ino
 
     - name: Get version number
       id: get_version
