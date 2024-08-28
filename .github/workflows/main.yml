@@ -43,5 +43,10 @@ jobs:
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         VERSION: ${{ env.VERSION }}
       run: |
-        curl -T ./output/gitCICD.ino.hex ftp://$FTP_SERVER/ --user $FTP_USERNAME:$FTP_PASSWORD
-        curl -T version.txt ftp://$FTP_SERVER/ --user $FTP_USERNAME:$FTP_PASSWORD
+        if [ -f ./output/gitCICD.ino.hex ]; then 
+          curl -T ./output/gitCICD.ino.hex ftp://$FTP_SERVER/ --user $FTP_USERNAME:$FTP_PASSWORD;
+          curl -T version.txt ftp://$FTP_SERVER/ --user $FTP_USERNAME:$FTP_PASSWORD;
+        else 
+          echo "Compiled .bin file not found. Skipping upload.";
+          exit 1;
+        fi
