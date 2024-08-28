@@ -1,4 +1,4 @@
-name: Deploy Arduino Blink Sketch
+name: Example Workflow
 
 on:
   push:
@@ -6,42 +6,12 @@ on:
       - master
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: List files in the repository
-      run: |
-        echo "Listing files in the repository..."
-        ls -R
-
-    - name: Set up Arduino CLI
-      uses: arduino/setup-arduino-cli@v1
-      with:
-        version: 0.31.0
-
-    - name: Install Arduino Core
-      run: |
-        arduino-cli core update-index
-        arduino-cli core install arduino:avr
-
-    - name: Compile Arduino Blink Sketch
-      run: |
-        arduino-cli compile --fqbn arduino:avr:uno --output-dir ./output test.ino
-
-    - name: Get version number
-      id: get_version
-      run: echo "VERSION=$(cat version.txt)" >> $GITHUB_ENV
-
-    - name: Upload bin file and version to Hostinger
-      env:
-        FTP_SERVER: ${{ secrets.FTP_SERVER }}
-        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-        VERSION: ${{ env.VERSION }}
-      run: |
-        curl -T ./output/test.ino.hex ftp://$FTP_SERVER/ --user $FTP_USERNAME:$FTP_PASSWORD
-        curl -T version.txt ftp://$FTP_SERVER/ --user $FTP_USERNAME:$FTP_PASSWORD
+    - name: Print Hello World
+      run: echo "Hello, world!"
