@@ -32,6 +32,10 @@ jobs:
       run: |
         arduino-cli compile --fqbn arduino:avr:uno --output-dir ./output gitCICD.ino
 
+    - name: Convert HEX to BIN
+      run: |
+        avr-objcopy -I ihex ./output/gitCICD.ino.hex -O binary ./output/gitCICD.ino.bin
+
     - name: Get version number
       id: get_version
       run: echo "VERSION=$(cat version.txt)" >> $GITHUB_ENV
@@ -43,10 +47,10 @@ jobs:
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         VERSION: ${{ env.VERSION }}
       run: |
-        if [ -f ./output/gitCICD.ino.hex ]; then 
+        if [ -f ./output/gitCICD.ino.bin ]; then 
           curl -T ./output/gitCICD.ino.hex ftp://$FTP_SERVER/ --user $FTP_USERNAME:$FTP_PASSWORD;
           curl -T version.txt ftp://$FTP_SERVER/ --user $FTP_USERNAME:$FTP_PASSWORD;
         else 
-          echo "gitCICD.ino.hex file not found. Skipping upload.";
+          echo "gitCICD.ino.bin file not found. Skipping upload.";
           exit 1;
         fi
