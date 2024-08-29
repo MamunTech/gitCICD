@@ -51,7 +51,7 @@ jobs:
         VERSION: ${{ env.VERSION }}
       run: |
         if [ -f ./output/gitCICD.ino.bin ]; then 
-          curl -T ./output/gitCICD.ino.hex ftp://$FTP_SERVER/ --user $FTP_USERNAME:$FTP_PASSWORD;
+          curl -T ./output/gitCICD.ino.bin ftp://$FTP_SERVER/ --user $FTP_USERNAME:$FTP_PASSWORD;
           curl -T version.txt ftp://$FTP_SERVER/ --user $FTP_USERNAME:$FTP_PASSWORD;
         else 
           echo "gitCICD.ino.bin file not found. Skipping upload.";
