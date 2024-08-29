@@ -17,7 +17,10 @@ jobs:
       run: |
         echo "Listing files in the repository..."
         ls -R
-
+        
+    - name: Install AVR GCC Tools
+      run: sudo apt-get install -y gcc-avr binutils-avr avr-libc
+      
     - name: Set up Arduino CLI
       uses: arduino/setup-arduino-cli@v1
       with:
